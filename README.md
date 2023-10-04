@@ -1,8 +1,8 @@
 # learningNotes
 
-Notes for future reference.
+Collation of learning notes and resources for future reference. Work in progress.
 
-Topics include: 
+Topics currently include: 
 - python
 - SQL
 - Docker and cntainerisation 
