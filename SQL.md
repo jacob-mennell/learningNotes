@@ -1,5 +1,33 @@
 # SQL 
 
+**Union vs. Union All**:
+- **Union**: The `UNION` operator in SQL combines the result sets of two or more SELECT statements into a single result set, removing duplicates. It returns a distinct set of rows.
+- **Union All**: The `UNION ALL` operator also combines result sets but doesn't remove duplicates. It includes all rows from each SELECT statement, which can be more efficient than `UNION` when duplicates are not a concern.
+
+**Transaction**:
+- A transaction in SQL is a group of one or more SQL statements executed together as a single unit. Transactions are used to ensure data consistency and integrity.
+- Transactions can be committed (saved) or rolled back (undone) as a whole. If any part of a transaction fails, the entire transaction can be rolled back to maintain data integrity.
+
+**Stored Procedure vs. Function**:
+- **Stored Procedure**: A stored procedure is a set of precompiled SQL statements that can be executed on demand. It can perform actions and may not necessarily return a value. Stored procedures are typically used for performing tasks or actions within the database.
+- **Function**: A function is a precompiled SQL statement that returns a single value or a table of values. It is designed to be used in SQL queries and can be called within SQL statements to compute and return values.
+
+**Merge (MERGE statement)**:
+- The `MERGE` statement in SQL is used to perform conditional INSERT, UPDATE, or DELETE operations on a target table based on a source table or query. It is often used for synchronizing data between two tables.
+
+**Offset and Limit**:
+- In SQL, `OFFSET` and `LIMIT` are used for pagination. `OFFSET` specifies the number of rows to skip from the beginning of the result set, and `LIMIT` restricts the number of rows returned.
+- For example, `SELECT * FROM table_name OFFSET 5 LIMIT 10` retrieves rows 6 to 15 from the `table_name`.
+
+**Star vs. Snowflake Schema**:
+- **Star Schema**: In data warehousing, a star schema is a design where a central fact table is connected to dimension tables. It's called a "star" because the diagram resembles a star, with the fact table in the center and dimension tables surrounding it.
+- **Snowflake Schema**: A snowflake schema is a variation of the star schema where dimension tables are normalized into multiple related tables. This normalization can reduce data redundancy but may require more complex queries.
+
+**Try-Catch in SQL**:
+- `TRY...CATCH` is an error-handling mechanism in SQL. It allows you to try a block of code and, if an error occurs, catch and handle it gracefully.
+- If an error occurs within the `TRY` block, control is passed to the `CATCH` block, where you can log the error, perform cleanup, or take other appropriate actions.
+- Using `TRY...CATCH` helps prevent unhandled exceptions from crashing your SQL code and provides better error reporting and handling.
+
 ## SQL join 
 In SQL, the efficiency of joining tables depends on several factors, including the size of the tables, the available indexes, and the specific database system being used. Generally, the efficiency of joining tables can be summarized as follows:
 
