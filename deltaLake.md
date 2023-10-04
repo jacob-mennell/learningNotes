@@ -40,3 +40,21 @@ In Delta Lake, there are indeed commands that allow you to manage and optimize y
    - `PARTITION BY`: An optional clause to specify the columns to use for reorganizing the data into partitions.
 
 So, the two primary commands for managing and optimizing data in Delta Lake are `VACUUM` and `OPTIMIZE`, with `ZORDER BY` being an important optimization technique within the `OPTIMIZE` command.
+
+## Delta vs Structured Streaming
+
+**Delta Live Tables**:
+- **Purpose**: Delta Live Tables is a framework for building end-to-end data pipelines that emphasize data quality, governance, and orchestration.
+- **Abstraction Level**: It offers a higher-level abstraction, simplifying the definition and management of complex data pipelines.
+- **Data Lake Support**: Built on Delta Lake, it provides features like ACID transactions, schema evolution, versioning, and data lake management.
+- **Use Cases**: Suited for comprehensive data pipeline scenarios where data quality and governance are crucial.
+- 
+**Structured Streaming**:
+- **Purpose**: Structured Streaming is a component of Apache Spark designed for real-time data processing and analytics.
+- **Abstraction Level**: It provides a lower-level streaming API focused on data transformation and processing, often requiring more manual coding.
+- **Data Lake Support**: Works with various data sources but doesn't offer the same level of data management features as Delta Lake.
+- **Use Cases**: Ideal for real-time data processing, analysis, and lightweight data transformations.
+
+In summary, Delta Live Tables is about building and managing robust data pipelines with a focus on data quality and governance, while Structured Streaming is primarily for real-time data processing and analytics. The choice between them depends on your specific use case and requirements.
+
+
