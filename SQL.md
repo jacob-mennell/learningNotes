@@ -93,7 +93,7 @@ A heap, which is a database table without a clustered index (meaning the rows ar
 
 In summary, the choice between a heap and a clustered index depends on your specific use case. If your workload primarily involves data inserts and updates with few read operations, a heap may be suitable for simplicity and insert performance. However, for read-heavy workloads or queries that require efficient data retrieval, filtering, or sorting, a clustered index is generally a better choice as it provides a defined order for data rows, which can significantly enhance query performance.
 
-## SQL join 
+## SQL Join Efficiency
 In SQL, the efficiency of joining tables depends on several factors, including the size of the tables, the available indexes, and the specific database system being used. Generally, the efficiency of joining tables can be summarized as follows:
 
 1. **Small with Large**: Joining a small table with a large table is often more efficient. The smaller table is scanned entirely, and then lookups are performed in the larger table. This is efficient because the smaller table can fit in memory, reducing the need for disk I/O operations.
