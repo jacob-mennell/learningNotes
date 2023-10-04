@@ -1,6 +1,6 @@
-#SQL 
+# SQL 
 
-##SQL join 
+## SQL join 
 In SQL, the efficiency of joining tables depends on several factors, including the size of the tables, the available indexes, and the specific database system being used. Generally, the efficiency of joining tables can be summarized as follows:
 
 1. **Small with Large**: Joining a small table with a large table is often more efficient. The smaller table is scanned entirely, and then lookups are performed in the larger table. This is efficient because the smaller table can fit in memory, reducing the need for disk I/O operations.
@@ -29,7 +29,7 @@ However, it's important to note that while indexing can greatly enhance query pe
 - **Maintenance Overhead**: Indexes need to be maintained as data is inserted, updated, or deleted from the table. This can introduce overhead during data modification operations.
 - **Choice of Index**: It's crucial to choose the right columns to index. Indexing too many columns or indexing columns that are rarely used in queries can lead to unnecessary overhead.
 
-##Indexing
+## Indexing
 In summary, indexing is a valuable tool for optimizing database query performance by reducing the amount of data that needs to be scanned and enabling efficient data retrieval. However, it should be used judiciously, with careful consideration of the specific database workload and query patterns.
 Point 1 refers to the fact that indexing allows for faster data retrieval by enabling the database management system (DBMS) to quickly locate and retrieve specific rows from a table. Let's break down how this works in more detail:
 
