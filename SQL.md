@@ -140,3 +140,110 @@ Point 1 refers to the fact that indexing allows for faster data retrieval by ena
 
 In summary, indexing works by creating a structured data representation that allows the DBMS to quickly pinpoint specific rows in a table based on the values in the indexed columns. This greatly accelerates data retrieval, reduces disk I/O, and improves query performance, especially when dealing with large datasets. However, choosing the right columns to index and maintaining indexes properly are crucial for optimal performance.
 
+1. **Scalar Value Function**:
+
+   - Returns a single scalar (single value) as its output.
+   - Typically used for operations that involve a single value calculation.
+   - Useful for tasks like performing calculations on individual rows or returning a single result based on input parameters.
+   - Example: A scalar function that calculates the square root of a number and returns a single numeric value.
+
+2. **Table Value Function**:
+
+   - Returns a table or set of rows as its output.
+   - Can return multiple rows and columns.
+   - Useful for tasks that require returning a result set or a subset of a table based on certain conditions.
+   - Often used in scenarios where you need to query a set of data based on parameters and return a dynamic result.
+   - Example: A table value function that takes a date range as input and returns a table of sales transactions within that range.
+
+In summary, the main distinction lies in the output:
+
+- Scalar functions return single values.
+- Table value functions return tables or result sets with multiple rows and columns.
+
+Certainly! Here are examples of both scalar and table value functions in SQL:
+
+**Scalar Value Function:**
+
+```sql
+-- Scalar function that calculates the square of a number
+CREATE FUNCTION CalculateSquare (@inputNumber INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @result INT
+    SET @result = @inputNumber * @inputNumber
+    RETURN @result
+END
+
+-- Usage of the scalar function
+SELECT dbo.CalculateSquare(5) AS Result; -- Returns 25
+```
+
+In this example, the `CalculateSquare` function takes an integer input and returns a single integer value, which is the square of the input.
+
+**Table Value Function:**
+
+```sql
+-- Table value function that returns a table of employees in a specific department
+CREATE FUNCTION GetEmployeesInDepartment (@departmentID INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT EmployeeID, FirstName, LastName
+    FROM Employees
+    WHERE DepartmentID = @departmentID
+)
+
+-- Usage of the table value function
+SELECT *
+FROM dbo.GetEmployeesInDepartment(2); -- Returns a table of employees in department 2
+```
+
+In this example, the `GetEmployeesInDepartment` function takes a department ID as input and returns a table of employees who belong to that department. The result is a set of rows and columns, not just a single value.
+
+These examples illustrate the difference between scalar and table value functions in SQL. The scalar function returns a single value, while the table value function returns a table or result set.
+
+`CROSS APPLY` and `OUTER APPLY` are two SQL operators used to apply a table-valued function to each row of a result set. They are commonly used in SQL queries to perform operations that involve joining a table with the result of a function for each row. Here's an explanation of both with examples:
+
+**CROSS APPLY**:
+
+- `CROSS APPLY` is used to apply a table-valued function to each row of a table expression.
+- It returns only the rows for which the function produces a result.
+- It acts like an inner join, meaning that it filters out rows where the function doesn't return any values.
+
+Example:
+
+Suppose you have a table of employees and a table-valued function `GetEmployeeProjects` that returns a list of projects for each employee.
+
+```sql
+-- Using CROSS APPLY to get employee projects
+SELECT e.EmployeeName, p.ProjectName
+FROM Employees e
+CROSS APPLY GetEmployeeProjects(e.EmployeeID) p;
+```
+
+In this example, `CROSS APPLY` applies the `GetEmployeeProjects` function to each employee, and it only returns employees who have associated projects. It acts like an inner join between employees and their projects.
+
+**OUTER APPLY**:
+
+- `OUTER APPLY` is similar to `CROSS APPLY`, but it returns all rows from the left table expression (even if the function doesn't produce any results).
+- It includes rows with no function result, filling in missing values with NULLs.
+
+Example:
+
+Using the same tables and function as in the previous example:
+
+```sql
+-- Using OUTER APPLY to get employee projects
+SELECT e.EmployeeName, p.ProjectName
+FROM Employees e
+OUTER APPLY GetEmployeeProjects(e.EmployeeID) p;
+```
+
+In this example, `OUTER APPLY` also applies the `GetEmployeeProjects` function to each employee. However, it returns all employees, including those without associated projects. Rows with no function result will have NULL values in the `ProjectName` column.
+
+In summary:
+
+- `CROSS APPLY` filters out rows where the function produces no result, acting like an inner join.
+- `OUTER APPLY` includes all rows from the left table expression, filling in missing values with NULLs for rows where the function doesn't return any result.
