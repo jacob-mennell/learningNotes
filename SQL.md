@@ -121,6 +121,62 @@ However, it's important to note that while indexing can greatly enhance query pe
 - **Storage Overhead**: Indexes consume additional storage space. This is a trade-off between storage and query performance. More indexes mean faster queries but larger storage requirements.
 - **Maintenance Overhead**: Indexes need to be maintained as data is inserted, updated, or deleted from the table. This can introduce overhead during data modification operations.
 - **Choice of Index**: It's crucial to choose the right columns to index. Indexing too many columns or indexing columns that are rarely used in queries can lead to unnecessary overhead.
+- 
+## Temp Tables
+There are two varieties of temp tables. Local temp tables are only accessible from their creation context, such as the connection. Global temp tables are accessible from other connection contexts. Both local and global temp tables reside in the tempdb database.
+
+**Creating Global Temporary Tables (##GlobalTempTable):**
+- Global temporary tables are visible to all sessions (users) and are deleted when the last session referencing them is closed.
+- They are useful for sharing temporary data across different sessions.
+
+**Syntax to Create a Global Temporary Table:**
+```sql
+CREATE TABLE ##GlobalTempTable (
+    Column1 datatype,
+    Column2 datatype,
+    -- Define other columns and constraints as needed
+);
+```
+
+**Example:**
+```sql
+CREATE TABLE ##GlobalTempTable (
+    EmployeeID INT,
+    EmployeeName NVARCHAR(50),
+    -- Additional columns
+);
+```
+
+**Creating Local Temporary Tables (#LocalTempTable):**
+- Local temporary tables are visible only within the current session and are deleted when the session is closed.
+- They are useful for temporary data storage within a single session.
+
+**Syntax to Create a Local Temporary Table:**
+```sql
+CREATE TABLE #LocalTempTable (
+    Column1 datatype,
+    Column2 datatype,
+    -- Define other columns and constraints as needed
+);
+```
+
+**Example:**
+```sql
+CREATE TABLE #LocalTempTable (
+    ProductID INT,
+    ProductName NVARCHAR(100),
+    -- Additional columns
+);
+```
+
+**Key Points:**
+- Temporary tables are often used for intermediate data storage during complex queries or data transformations.
+- Temporary tables are automatically dropped when they go out of scope (e.g., when the session or sessions using them are closed).
+- Ensure that the column datatypes and constraints match your specific requirements.
+- Temporary tables can be used to store, manipulate, and join data just like regular tables.
+- To access global temporary tables from different sessions, use the double pound sign (##) before the table name. For local temporary tables within the same session, use a single pound sign (#).
+
+**Note:** Be cautious when using temporary tables, especially global ones, as they can potentially lead to resource contention in multi-user environments. Always drop them when they are no longer needed to free up resources.
 
 ## Indexing
 In summary, indexing is a valuable tool for optimizing database query performance by reducing the amount of data that needs to be scanned and enabling efficient data retrieval. However, it should be used judiciously, with careful consideration of the specific database workload and query patterns.
