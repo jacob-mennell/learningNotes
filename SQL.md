@@ -65,7 +65,7 @@ In SQL databases, you would use both clustered and non-clustered indexes, but th
 
 **Non-Clustered Index**:
 1. **Additional Indexes**: You can have multiple non-clustered indexes on a table. These are used to improve query performance for specific columns or queries.
-2. **Data Organization**: Non-clustered indexes store a copy of the indexed column(s) with a pointer to the corresponding data row in the clustered index or the heap (if there's no clustered index).
+2. **Data Organization**: Non-clustered indexes store a copy of the indexed column(s) with a pointer to the corresponding data row in the clustered index or the heap (if there's no clustered index). So the non clustered index points to the right rowe in clustered index. Additional helper.
 3. **Data Retrieval**: Non-clustered indexes are useful for efficiently querying specific columns or for sorting data based on the indexed columns. They can significantly improve query performance for filtering operations.
 4. **Not Unique**: Non-clustered indexes do not have to be unique. Multiple rows can have the same indexed values.
 
