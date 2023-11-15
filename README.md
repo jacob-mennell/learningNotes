@@ -8,4 +8,6 @@ Topics currently include:
 - Docker and containerisation 
 - Delta tables
 - embeddings
+- netowrking
+- AWS broad services
 
