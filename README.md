@@ -1,6 +1,6 @@
 ## Learning Notes:
 
-This repository is a collection of learning notes and resources for future reference. It's a work in progress, and the topics currently include:
+This repository is a collection of learning notes and resources for future reference to support my own learning. It's a work in progress, and the topics currently include:
 
 ### Topics
 
