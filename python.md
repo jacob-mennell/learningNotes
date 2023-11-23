@@ -147,4 +147,26 @@ The `draw_shape` function takes any object that conforms to the `Shape` interfac
 - **Promotes Modularity:** By hiding implementation details, abstraction encourages modularity and separation of concerns, making the codebase more maintainable.
 
 - **Blueprint for Subclasses:** Abstract classes act as blueprints, guiding the implementation of concrete subclasses while ensuring adherence to a predefined structure.
+
+**Dataclasses**:
+
+Dataclasses in Python are a way of creating classes which are primarily used to store values. They are a part of the `dataclasses` module.
+
+### Benefits:
+
+1. **Less Boilerplate Code**: Dataclasses automatically add special methods like `__init__`, `__repr__`, and `__eq__` to the class, reducing the amount of boilerplate code you need to write.
+
+2. **Immutability**: Dataclasses can be made immutable by setting the `frozen` parameter to `True`. This makes the class instances hashable.
+
+3. **Default Values**: Dataclasses support default values for attributes. This can be done using the `default` parameter or the `default_factory` parameter for mutable defaults.
+
+### How it works:
+
+```python
+import dataclasses
+
+@dataclasses.dataclass
+class ExampleClass:
+    attribute1: int
+    attribute2: str = 'default value'
 ```
