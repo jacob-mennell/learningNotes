@@ -377,3 +377,24 @@ CREATE TABLE child_table (
 - **Explanation:** In this query, CROSS APPLY is used to apply the OPENJSON function to each row of the 'authors' column, extracting information about each author. The result is a set of rows where the JSON array of authors is broken down into individual rows, facilitating the extraction of specific attributes like 'first', 'last', and 'affiliation' for each author.
 
 - **Key Point:** CROSS APPLY is particularly useful when dealing with nested or hierarchical data within a row, enabling a more structured handling of individual elements in a set.
+
+```sql
+-- If you don't specify anything inside the WITH clause of CROSS APPLY OPENJSON,
+-- it attempts to infer the structure of the JSON data and generates columns accordingly.
+
+-- Example query:
+SELECT
+    *
+FROM
+    OPENROWSET(
+        'CosmosDB',
+        'Account=synapselink-cosmosdb-sqlsample;Database=covid;Key=YourCosmosDBKey',
+        Cord19
+    ) WITH (
+        title varchar(1000) '$.metadata.title',
+        authors varchar(max) '$.metadata.authors'
+    ) AS docs
+CROSS APPLY OPENJSON(authors)
+```
+
+In this query, if you don't specify columns inside the `WITH` clause of `OPENJSON(authors)`, it will try to automatically infer the JSON structure and create columns like 'key', 'value', and 'type' by default. This is convenient for simple JSON structures, but for more complex cases, it's advisable to explicitly define the columns for accurate extraction.
