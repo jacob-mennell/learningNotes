@@ -342,3 +342,38 @@ CREATE TABLE child_table (
     FOREIGN KEY (parent_id) REFERENCES parent_table(id)
 );
 ```
+
+**CROSS APPLY:**
+
+- **Definition:** CROSS APPLY is a SQL operator used to invoke a table-valued function for each row returned by the outer table expression. It is particularly useful when dealing with functions that depend on the values of each row.
+
+- **Syntax:**
+  ```sql
+  SELECT columns
+  FROM outer_table
+  CROSS APPLY table_valued_function(parameters) AS alias
+  ```
+
+- **Use Case:** Typically used when you need to apply a function to a set of data for each row individually, and the function returns a table (table-valued function).
+
+- **Example in Your Query:**
+  ```sql
+  SELECT
+      *
+  FROM
+      OPENROWSET(
+        'CosmosDB',
+        'Account=synapselink-cosmosdb-sqlsample;Databse=Cord19;Key=dummy
+      ) WITH ( title varchar(1000) '$.metadata.title',
+               authors varchar(max) '$.metadata.authors' ) AS docs
+      CROSS APPLY OPENJSON ( authors )
+                  WITH (
+                       first varchar(50),
+                       last varchar(50),
+                       affiliation nvarchar(max) as json
+                  ) AS x
+  ```
+
+- **Explanation:** In this query, CROSS APPLY is used to apply the OPENJSON function to each row of the 'authors' column, extracting information about each author. The result is a set of rows where the JSON array of authors is broken down into individual rows, facilitating the extraction of specific attributes like 'first', 'last', and 'affiliation' for each author.
+
+- **Key Point:** CROSS APPLY is particularly useful when dealing with nested or hierarchical data within a row, enabling a more structured handling of individual elements in a set.
