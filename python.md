@@ -215,3 +215,53 @@ class ExampleClass:
     def __post_init__(self):
         if self.attribute1 < 0:
             raise ValueError("attribute1 must be positive")
+```
+
+## Dataclasses and Inheritance
+
+Dataclasses in Python support inheritance. If a dataclass inherits from another dataclass, it will have all of the fields of its parent class.
+
+Here's an example:
+
+```python
+import dataclasses
+
+@dataclasses.dataclass
+class ParentClass:
+    attribute1: int
+    attribute2: str = 'default value'
+
+@dataclasses.dataclass
+class ChildClass(ParentClass):
+    attribute3: float
+    attribute4: bool = True
+
+child = ChildClass(10, 'value', 3.14)
+print(child)  # Output: ChildClass(attribute1=10, attribute2='value', attribute3=3.14, attribute4=True)
+```
+Sure, here's the information you requested in a single Markdown block:
+
+### Dataclasses and Inheritance
+
+Dataclasses in Python support inheritance. If a dataclass inherits from another dataclass, it will have all of the fields of its parent class.
+
+Here's an example:
+
+```python
+import dataclasses
+
+@dataclasses.dataclass
+class ParentClass:
+    attribute1: int
+    attribute2: str = 'default value'
+
+@dataclasses.dataclass
+class ChildClass(ParentClass):
+    attribute3: float
+    attribute4: bool = True
+
+child = ChildClass(10, 'value', 3.14)
+print(child)  # Output: ChildClass(attribute1=10, attribute2='value', attribute3=3.14, attribute4=True)
+```
+
+In this example, `ChildClass` is a dataclass that inherits from `ParentClass`. It has all of the fields of `ParentClass` (`attribute1` and `attribute2`), as well as its own fields (`attribute3` and `attribute4`).
