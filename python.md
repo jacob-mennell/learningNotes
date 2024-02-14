@@ -239,7 +239,6 @@ class ChildClass(ParentClass):
 child = ChildClass(10, 'value', 3.14)
 print(child)  # Output: ChildClass(attribute1=10, attribute2='value', attribute3=3.14, attribute4=True)
 ```
-Sure, here's the information you requested in a single Markdown block:
 
 ### Dataclasses and Inheritance
 
@@ -360,7 +359,7 @@ obj = LazyObject()
 print("LazyObject created")
 print(obj.value)  # This will trigger the creation of the ExpensiveObject
 ```
-Sure, let's break down the `LazyObject` class:
+let's break down the `LazyObject` class:
 
 ```python
 class LazyObject(wrapt.ObjectProxy):
