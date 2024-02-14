@@ -265,3 +265,41 @@ print(child)  # Output: ChildClass(attribute1=10, attribute2='value', attribute3
 ```
 
 In this example, `ChildClass` is a dataclass that inherits from `ParentClass`. It has all of the fields of `ParentClass` (`attribute1` and `attribute2`), as well as its own fields (`attribute3` and `attribute4`).
+
+# Wrapt in Python
+
+`wrapt` is a Python module for decorators, wrappers, and monkey patching. It provides a higher level and more intuitive API for making function wrappers, compared to the lower-level techniques that Python itself offers.
+
+## Benefits of Wrapt
+
+1. **Simpler syntax for decorators**: `wrapt` provides a simpler and more intuitive syntax for creating decorators, which can make your code easier to write and understand.
+
+2. **Preserving function signatures**: When you wrap a function with a decorator in Python, by default the metadata of the original function (like its name, docstring, and parameter list) is lost. `wrapt` preserves this information, which can be very useful for debugging and documentation.
+
+3. **Object proxying**: `wrapt` provides a way to create proxy objects that can be used to wrap and track access to another object. This can be useful for things like lazy loading, where you want to delay the creation of an object until it's actually needed.
+
+4. **Monkey patching**: `wrapt` provides a way to replace existing functions or methods with a wrapper, even after they've been defined. This can be useful for modifying the behavior of third-party code that you can't or don't want to modify directly.
+
+5. **Post-import hooks**: `wrapt` provides a mechanism to automatically apply decorators to functions and methods in a module as soon as it is imported, which can be useful for automatically instrumenting code.
+
+## Example
+
+Here's how you can create a logging decorator using `wrapt`:
+
+```python
+import wrapt
+
+@wrapt.decorator
+def logging_decorator(func, instance, args, kwargs):
+    print(f"Calling {func.__name__}")
+    result = func(*args, **kwargs)
+    print(f"{func.__name__} returned {result}")
+    return result
+
+@logging_decorator
+def add(x, y):
+    return x + y
+
+print(add(1, 2))
+```
+In this example, wrapt.decorator is used to create the decorator. It automatically preserves the metadata of the original function and provides a more intuitive API for creating the decorator.
