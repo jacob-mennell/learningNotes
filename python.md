@@ -303,3 +303,115 @@ def add(x, y):
 print(add(1, 2))
 ```
 In this example, wrapt.decorator is used to create the decorator. It automatically preserves the metadata of the original function and provides a more intuitive API for creating the decorator.
+
+The benefit of wrapt is that it simplifies this process and automatically handles preserving the function metadata. It also provides additional features like object proxying and post-import hooks, which are not available with the standard Python decorator syntax.
+
+### Metadata
+When you create a decorator in Python, it replaces the original function with a new function (usually a wrapper function). By default, this new function does not have the same metadata as the original function (like its name, docstring, and parameter list). This can be problematic for debugging and documentation.
+
+wrapt automatically preserves this metadata when you create a decorator using wrapt.decorator. It does this by using the functools.wraps function from the Python standard library, which updates the wrapper function to look like the original function. Here's an example:
+``` python
+import wrapt
+
+@wrapt.decorator
+def logging_decorator(func, instance, args, kwargs):
+    print(f"Calling {func.__name__}")
+    result = func(*args, **kwargs)
+    print(f"{func.__name__} returned {result}")
+    return result
+
+@logging_decorator
+def add(x, y):
+    """Add two numbers."""
+    return x + y
+
+print(add.__name__)  # Outputs: add
+print(add.__doc__)   # Outputs: Add two numbers.
+
+```
+In this example, the logging_decorator is created using wrapt.decorator. Even though the add function is replaced by a wrapper function, it still has the same name and docstring as the original function.
+
+### Object Proxying
+
+Object proxying is a technique where you create a "proxy" or "stand-in" object that controls access to another object. This can be useful in a variety of situations. For example, you might want to delay the creation of an object until it's actually needed (a technique known as "lazy loading"), or you might want to track access to an object for debugging or logging purposes.
+
+In Python, you can create a proxy object by defining a class that overrides the __getattr__ method to forward attribute access to the underlying object. However, this can be tricky to get right, especially for more complex use cases. The wrapt module provides a ObjectProxy class that makes it easier to create correct and robust proxy objects.
+
+```python
+import wrapt
+
+class ExpensiveObject:
+    def __init__(self):
+        print("Creating ExpensiveObject")
+        self.value = 42
+
+class LazyObject(wrapt.ObjectProxy):
+    def __init__(self):
+        super().__init__(None)
+        self._self_loaded = False
+
+    def __getattr__(self, name):
+        if not self._self_loaded:
+            self.__wrapped__ = ExpensiveObject()
+            self._self_loaded = True
+        return getattr(self.__wrapped__, name)
+
+obj = LazyObject()
+print("LazyObject created")
+print(obj.value)  # This will trigger the creation of the ExpensiveObject
+```
+Sure, let's break down the `LazyObject` class:
+
+```python
+class LazyObject(wrapt.ObjectProxy):
+    def __init__(self):
+        super().__init__(None)
+        self._self_loaded = False
+```
+
+`LazyObject` is a subclass of `wrapt.ObjectProxy`, which is a base class provided by `wrapt` for creating object proxies. The `__init__` method is the constructor for the class. It first calls the constructor of the base class with `super().__init__(None)`, passing `None` as the object to be wrapped. This is because the object to be wrapped (`ExpensiveObject`) hasn't been created yet. It also initializes a `_self_loaded` attribute to `False`, indicating that the `ExpensiveObject` hasn't been loaded yet.
+
+```python
+    def __getattr__(self, name):
+        if not self._self_loaded:
+            self.__wrapped__ = ExpensiveObject()
+            self._self_loaded = True
+        return getattr(self.__wrapped__, name)
+```
+
+The `__getattr__` method is a special method in Python that's called when an attribute of an object is accessed. In this case, it's overridden to load the `ExpensiveObject` the first time an attribute is accessed. If `_self_loaded` is `False`, it creates an `ExpensiveObject`, assigns it to `self.__wrapped__` (the attribute used by `wrapt.ObjectProxy` to store the wrapped object), and sets `_self_loaded` to `True`. It then returns the requested attribute from `self.__wrapped__`.
+
+```python
+obj = LazyObject()
+print("LazyObject created")
+print(obj.value)  # This will trigger the creation of the ExpensiveObject
+```
+
+Here, a `LazyObject` is created. At this point, no `ExpensiveObject` has been created yet, as indicated by the absence of the "Creating ExpensiveObject" message. The `ExpensiveObject` is only created when `obj.value` is accessed, which triggers the `__getattr__` method and the creation of the `ExpensiveObject`.
+
+The `super()` function is a built-in function in Python that's used to call a method in a superclass. In this case, it's used to call the constructor of `wrapt.ObjectProxy`. This is necessary because `LazyObject` is a subclass of `wrapt.ObjectProxy`, and the constructor of the superclass needs to be called to properly initialize the object.
+
+### Post-Import Hooks
+
+A post-import hook is a mechanism that allows you to automatically apply decorators to functions and methods in a module as soon as it is imported. This can be useful for automatically instrumenting code, for example to add logging or performance monitoring.
+
+In Python, you can create a post-import hook by using the wrapt module's when_imported function. This function takes the name of a module and a callback function, and it calls the callback function with the module object as soon as the module is imported. The callback function can then modify the module object, for example by wrapping its functions or methods with decorators.
+
+Here's an example of how you might use a post-import hook to automatically log calls to functions in a module:
+``` python
+import wrapt
+
+@wrapt.decorator
+def logging_decorator(func, instance, args, kwargs):
+    print(f"Calling {func.__name__}")
+    result = func(*args, **kwargs)
+    print(f"{func.__name__} returned {result}")
+    return result
+
+def log_module_functions(module):
+    for name, obj in vars(module).items():
+        if callable(obj):
+            setattr(module, name, logging_decorator(obj))
+
+wrapt.when_imported('some_module')(log_module_functions)
+```
