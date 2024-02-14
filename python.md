@@ -265,6 +265,66 @@ print(child)  # Output: ChildClass(attribute1=10, attribute2='value', attribute3
 
 In this example, `ChildClass` is a dataclass that inherits from `ParentClass`. It has all of the fields of `ParentClass` (`attribute1` and `attribute2`), as well as its own fields (`attribute3` and `attribute4`).
 
+# Super
+
+Sure, here are a few examples of how the `super()` function can be used in Python:
+
+**1. Calling a method in a superclass:**
+
+```python
+class Base:
+    def hello(self):
+        print("Hello from Base")
+
+class Derived(Base):
+    def hello(self):
+        super().hello()
+        print("Hello from Derived")
+
+d = Derived()
+d.hello()  # Outputs: Hello from Base, Hello from Derived
+```
+
+In this example, `Derived` is a subclass of `Base`, and both classes have a `hello` method. In the `hello` method of `Derived`, `super().hello()` is used to call the `hello` method in `Base`.
+
+**2. Calling a constructor in a superclass:**
+
+```python
+class Base:
+    def __init__(self, value):
+        self.value = value
+
+class Derived(Base):
+    def __init__(self, value, extra):
+        super().__init__(value)
+        self.extra = extra
+
+d = Derived(1, 2)
+print(d.value, d.extra)  # Outputs: 1 2
+```
+
+In this example, `Derived` is a subclass of `Base`, and both classes have a constructor (`__init__`). In the constructor of `Derived`, `super().__init__(value)` is used to call the constructor of `Base`.
+
+**3. Calling a method in a superclass from a different method:**
+
+```python
+class Base:
+    def hello(self):
+        print("Hello from Base")
+
+class Derived(Base):
+    def hello(self):
+        print("Hello from Derived")
+
+    def greet(self):
+        super().hello()
+
+d = Derived()
+d.greet()  # Outputs: Hello from Base
+```
+
+In this example, `Derived` is a subclass of `Base`, and both classes have a `hello` method. In the `greet` method of `Derived`, `super().hello()` is used to call the `hello` method in `Base`.
+
 # Wrapt in Python
 
 `wrapt` is a Python module for decorators, wrappers, and monkey patching. It provides a higher level and more intuitive API for making function wrappers, compared to the lower-level techniques that Python itself offers.
