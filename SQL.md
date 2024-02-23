@@ -347,6 +347,8 @@ CREATE TABLE child_table (
 
 - **Definition:** CROSS APPLY is a SQL operator used to invoke a table-valued function for each row returned by the outer table expression. It is particularly useful when dealing with functions that depend on the values of each row.
 
+- However, it can be used with a table, not a function. When used with a table, `CROSS APPLY` works like an `INNER JOIN`, but it also allows referencing items in the left table from the right table.
+
 - **Syntax:**
   ```sql
   SELECT columns
