@@ -400,3 +400,49 @@ CROSS APPLY OPENJSON(authors)
 ```
 
 In this query, if you don't specify columns inside the `WITH` clause of `OPENJSON(authors)`, it will try to automatically infer the JSON structure and create columns like 'key', 'value', and 'type' by default. This is convenient for simple JSON structures, but for more complex cases, it's advisable to explicitly define the columns for accurate extraction.
+
+**Implementing Row-Level Security (RLS) in SQL Server:**
+
+1. **Create a Table-Valued Function (TVF)**: This function will return a table that determines whether a user has access to a row based on their role or other attributes.
+
+    ```sql
+    CREATE FUNCTION securitytesting.tvf_securitypredicate_bdx_binder_year_of_account(@yearofaccount AS INT)  
+        RETURNS TABLE  
+    WITH SCHEMABINDING  
+    AS  
+        RETURN SELECT 1 AS tvf_securitypredicate_result
+                 FROM securitytesting.bdx_binder_year_of_account yoa
+                WHERE IS_MEMBER(yoa.external_group) = 1
+                  AND yoa.YearOfAccount = @yearofaccount
+                UNION ALL
+                SELECT 1 AS tvf_securitypredicate_result
+                 WHERE IS_ROLEMEMBER('db_owner') = 1
+    GO
+    ```
+
+2. **Create a Security Policy**: Use the `CREATE SECURITY POLICY` statement to apply the TVF as a filter predicate to a table.
+
+    ```sql
+    CREATE SECURITY POLICY securitytesting.SecurityPolicy
+    ADD FILTER PREDICATE securitytesting.tvf_securitypredicate_bdx_binder_year_of_account(YearOfAccount)
+    ON securitytesting.bdx_binder_year_of_account
+    WITH (STATE = ON);
+    ```
+
+**Implementing Column-Level Security with Dynamic Data Masking (DDM) in SQL Server:**
+
+1. **Add a Mask to a Column**: Use the `ALTER TABLE` statement to add a mask to a column.
+
+    ```sql
+    ALTER TABLE securitytesting.bdx_binder_year_of_account
+    ADD MASKED WITH (FUNCTION = 'default()')
+    FOR [SensitiveColumn];
+    ```
+
+2. **Grant the `UNMASK` Permission**: Use the `GRANT` statement to give specific users or roles the ability to see the unmasked data.
+
+    ```sql
+    GRANT UNMASK TO [SpecificUserOrRole];
+    ```
+
+With these steps, you can implement row-level and column-level security in SQL Server to control access to data based on the user's identity or role.
