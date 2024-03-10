@@ -476,9 +476,9 @@ wrapt.when_imported('some_module')(log_module_functions)
 ```
 
 ### Copy in DataFrame
-In Python, variables are 'passed by reference', not by value. This means that if you modify a DataFrame inside a function, the changes will be reflected in the original DataFrame outside the function as well. To avoid this, you can create a copy of the DataFrame at the start of the function. Any changes you make to the copy will not affect the original DataFrame.
+In Python, mutable objects are 'passed by reference', not by value (lists, dicts, pd.df). This means that if you modify a DataFrame inside a function, the changes will be reflected in the original DataFrame outside the function as well. To avoid this, you can create a copy of the DataFrame at the start of the function. Any changes you make to the copy will not affect the original DataFrame.
 
-This is valid for all mutable objects such as lists, dicts, pandas dfs. Alternatively, immutable objects like integers, strings and tuples cannot be changed after they are created. In this case, we pass the value not the object itself so the original object cannot be modified by the function 'pass by object'.
+This is valid for all mutable Alternatively, immutable objects (integers, strings and tuples) cannot be changed after they are created. In this case, we pass the value not the object itself so the original object cannot be modified by the function, named 'pass by object'.
 
 ### Type Hints and Runtime Enforcement
 Python's type hints are not enforced at runtime. This means that even though your function specifies that it expects a DataFrame, Python won't stop you from calling the function with an integer or any other type. The error will occur later, when your function tries to call a method that the argument's type doesn't support. Explicit type checking at the start of your function can provide a clearer error message in these cases. However, if you're confident that your function will always be called with the correct types, you might choose to omit the explicit type checks for simplicity.
